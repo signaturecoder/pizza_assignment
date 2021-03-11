@@ -1,12 +1,12 @@
 import React from 'react'
 import './App.css';
 import Header from './components/Header';
-import PizzaCard from './components/PizzaCard';
+import PizzaList from './containers/PizzaList';
 function App() {
   return (
     <div className="App">
       <Header />
-        <PizzaCard />
+        <PizzaList />
     </div>
   );
 }

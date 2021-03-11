@@ -22,7 +22,7 @@ const useStyles = makeStyles({
       boxShadow: ' 5px 5px 15px 5px #888888',
     },
     media: {
-      height: 140,
+      height: 200,
     },
     removeLine: {
       textDecoration: 'none',
@@ -30,7 +30,7 @@ const useStyles = makeStyles({
     },
   });
 
-const PizzaCard = () => {
+const PizzaCard = ({name, description, price, rating, size, toppings, imgSrc}) => {
 
     const classes = useStyles();
 
@@ -40,33 +40,26 @@ const PizzaCard = () => {
 return (
     <Card className={classes.card}>
     <CardActionArea>
-      <Typography gutterBottom variant="h5" component="h2">
-       helo
-      </Typography>
-      {/* <CardMedia
+      <CardMedia
         className={classes.media}
-        image={props.data.cardImage}
-        title="Contemplative Reptile"
-      /> */}
+        image={imgSrc}
+        title="pizza"
+      />
       <CardContent>
         <Typography gutterBottom variant="h5" component="h2">
-        Pizza
+        {name}
         </Typography>
         <Typography variant="h6" component="h6">
-          <Box textAlign="left">Category : </Box>
-          <Box textAlign="left">Price :</Box>
-          <Box textAlign="left">Discount : </Box>
+          <Box textAlign="left">Desciption : {description}</Box>
+          <Box textAlign="left">Price : Rs { price}</Box>
           <Box textAlign="left">
-            Rating :
-            <Rating name="read-only" value={5} readOnly />
+            Rating : <Rating name="read-only" value={rating} readOnly />
           </Box>
-          <Box textAlign="left">Comments : </Box>
         </Typography>
       </CardContent>
     </CardActionArea>
     <CardActions>
-
-      <Button label="Buy And Share" handleClick={handleBuy} />
+    <Button variant="contained" color="primary" onClick={handleBuy}>Add </Button>
     </CardActions>
   </Card>
 )
