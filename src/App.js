@@ -1,14 +1,12 @@
 import React from 'react'
 import './App.css';
-import Button from '@material-ui/core/Button';
+import Header from './components/Header';
+import PizzaCard from './components/PizzaCard';
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-      <Button variant="contained" color="primary">
-        Primary
-      </Button>
-      </header>
+      <Header />
+        <PizzaCard />
     </div>
   );
 }
