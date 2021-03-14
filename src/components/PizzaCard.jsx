@@ -14,6 +14,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import Box from '@material-ui/core/Box';
 import Rating from '@material-ui/lab/Rating';
 import Button from '@material-ui/core/Button';
+import PizzaDetails from './PizzaDetails';
 
 const useStyles = makeStyles({
     card: {
@@ -33,10 +34,18 @@ const useStyles = makeStyles({
 const PizzaCard = ({name, description, price, rating, size, toppings, imgSrc}) => {
 
     const classes = useStyles();
-
-    const handleBuy = () => {
-
+    const [open, setOpen] = useState(false);
+    const [selectedValue, setSelectedValue] = useState("");
+    const handleAdd = () => {
+         setOpen(true);
     }
+
+    const handleClose = (value) => {
+      setOpen(false);
+      setSelectedValue(value);
+    };
+
+   
 return (
     <Card className={classes.card}>
     <CardActionArea>
@@ -59,8 +68,9 @@ return (
       </CardContent>
     </CardActionArea>
     <CardActions>
-    <Button variant="contained" color="primary" onClick={handleBuy}>Add </Button>
+    <Button variant="contained" color="primary" onClick={handleAdd}>Add </Button>
     </CardActions>
+    <PizzaDetails selectedValue={selectedValue} open={open} onClose={handleClose} size={size} toppings={toppings}/>
   </Card>
 )
 }
