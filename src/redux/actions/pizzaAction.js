@@ -1,5 +1,5 @@
 import * as types from './actionTypes';
-import * as pizzaApi from '../../api/userApi';
+import * as pizzaApi from '../../api/pizzaApi';
 
 export function loadPizzaSuccess(pizzas) {
     return { type: types.LOAD_PIZZA_SUCCESS, pizzas };

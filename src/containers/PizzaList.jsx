@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import PizzaCard from '../components/PizzaCard';
 import { makeStyles } from '@material-ui/core/styles';
+import { useDispatch, useSelector } from 'react-redux';
+import {loadPizzas} from '../redux/actions/pizzaAction'
 const useStyles = makeStyles({
     cardList: {
      display: 'flex',
@@ -12,14 +14,19 @@ const useStyles = makeStyles({
 
 const PizzaList = () => {
     const classes = useStyles();
-    const [pizzaList, setPizzaList] = useState([])
+    const dispatch = useDispatch();
+    const pizzaList = useSelector((state) => state.pizzas);
+    // const [pizzaList, setPizzaList] = useState([])
     useEffect(() => {
-        axios.get('https://run.mocky.io/v3/ec196a02-aaf4-4c91-8f54-21e72f241b68').then(res => {
-            console.log(res);
-            const pizzaListRes = res.data;
-            setPizzaList(pizzaListRes);
-        })
+        // axios.get('https://run.mocky.io/v3/ec196a02-aaf4-4c91-8f54-21e72f241b68').then(res => {
+        //     console.log(res);
+        //     const pizzaListRes = res.data;
+        //     setPizzaList(pizzaListRes);
+        // })
+        dispatch(loadPizzas())
     }, [])
+
+    console.log('Pizzas', pizzaList);
     return (
         <div className={classes.cardList}>
             {pizzaList && pizzaList.map(pizza => {

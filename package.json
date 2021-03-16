@@ -42,5 +42,10 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "dotenv": "^8.2.0",
+    "redux-devtools-extension": "^2.13.9",
+    "redux-immutable-state-invariant": "^2.1.0"
   }
 }
