@@ -67,7 +67,6 @@ const PizzaCard = ({
 
   return (
     <Card className={classes.card}>
- 
         <CardMedia className={classes.media} image={imgSrc} title="pizza" />
         <CardContent>
           <Typography variant="h6" gutterBottom>
