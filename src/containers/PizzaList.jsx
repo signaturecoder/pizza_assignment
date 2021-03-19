@@ -8,6 +8,7 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import Switch from "@material-ui/core/Switch";
+import Checkbox from "@material-ui/core/Checkbox";
 import { useDispatch, useSelector } from "react-redux";
 import { loadPizzas } from "../redux/actions/pizzaAction";
 const useStyles = makeStyles((theme) => ({
@@ -34,24 +35,55 @@ const PizzaList = () => {
   const dispatch = useDispatch();
   const pizzaList = useSelector((state) => state.pizzas);
   const [isVeg, setIsVeg] = useState(false);
+  const [allChecked, setAllChecked] = useState(true);
   const [order, setOrder] = useState("asc");
   const [ratingOrder, setRatingOrder] = useState("low");
   // const [filteredPizzaList, setFilteredPizzaList] = useState(pizzaList);
+  // let filteredPizzaList = [];
+
+  // const updatedPizzaList = JSON.parse(JSON.stringify(pizzaList));
+  // if (filteredPizzaList.length === 0) {
+  //   filteredPizzaList = updatedPizzaList;
+  // }
   const handleChange = (event) => {
     setIsVeg(event.target.checked);
-    const filteredList = pizzaList.filter((pizza) => pizza.isVeg);
-    console.log("filterd", filteredList);
-    // setFilteredPizzaList(filteredList);
+  };
+
+  const handleCheckboxChange = (event) => {
+    setAllChecked(event.target.checked);
   };
 
   useEffect(() => {
     dispatch(loadPizzas());
   }, []);
 
-  //   console.log("Pizzas", filteredPizzaList);
+  // useEffect(() => {
+  //   const filteredList = pizzaList.filter((pizza) => {
+  //     if (pizza.isVeg === isVeg) return pizza;
+  //   });
+  //   filteredPizzaList = filteredList;
+  //   console.log("ISVEG", isVeg);
+  //   console.log("filterd", filteredList);
+  //   // setFilteredPizzaList(filteredList);
+  // }, [isVeg]);
+  // console.log("outside ISVEG", isVeg);
+  // console.log("Pizzas", pizzaList);
+  if (pizzaList.length === 0) return <p>Loading...</p>;
+
   return (
     <div>
       <div className={classes.menu}>
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={allChecked}
+              color="primary"
+              onChange={handleCheckboxChange}
+              inputProps={{ "aria-label": "primary checkbox" }}
+            />
+          }
+          label="All"
+        />
         <FormControlLabel
           control={
             <Switch
@@ -83,7 +115,7 @@ const PizzaList = () => {
             <MenuItem value={"desc"}>Price: High to Low</MenuItem>
           </Select>
         </FormControl>
-        <FormControl  className={classes.formControl}>
+        <FormControl className={classes.formControl}>
           <InputLabel id="demo-simple-select-outlined-label">
             Sort By Rating
           </InputLabel>

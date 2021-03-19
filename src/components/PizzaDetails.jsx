@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
@@ -14,45 +14,39 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormControl from "@material-ui/core/FormControl";
 import FormLabel from "@material-ui/core/FormLabel";
 import Grid from "@material-ui/core/Grid";
+import PizzaQuantity from "./PizzaQuantity";
 const useStyles = makeStyles({
-  dialogBox: {
-    flexGrow: 1,
-
+  radioGroup: {
+    margin: 10,
   },
 });
 
 const PizzaDetails = React.memo((props) => {
   const classes = useStyles();
-  const [checked, setChecked] = React.useState([0]);
-  const { onClose, selectedValue, open, size, toppings } = props;
-  const [value, setValue] = React.useState("female");
 
-  const handleChange = (event) => {
-    setValue(event.target.value);
-  };
+  const {
+    onClose,
+    selectedValue,
+    open,
+    size,
+    toppings,
+    quantity,
+    checked,
+    selectedRadioOption,
+    selectedSizeOption,
+    onRadioChange,
+    onIncrease,
+    onDecrease,
+    onToggle,
+    onSizeChange
+  } = props;
 
   const handleClose = () => {
     onClose(selectedValue);
   };
 
-  const handleListItemClick = (value) => {
-    onClose(value);
-  };
-
-  const handleToggle = (value) => () => {
-    const currentIndex = checked.indexOf(value);
-    const newChecked = [...checked];
-
-    if (currentIndex === -1) {
-      newChecked.push(value);
-    } else {
-      newChecked.splice(currentIndex, 1);
-    }
-
-    setChecked(newChecked);
-  };
-  console.log("Size", size);
-  console.log("toppings", toppings[0]);
+  // console.log("Checked", checked);
+  // console.log("selectedValue", selectedValue);
   return (
     <div className={classes.dialogBox}>
       <Dialog
@@ -61,24 +55,27 @@ const PizzaDetails = React.memo((props) => {
         open={open}
       >
         <DialogTitle id="simple-dialog-title">
-          Select Addons and Toppings{" "}
+          Choose Addons and Toppings{" "}
         </DialogTitle>
+        <PizzaQuantity
+          quantity={quantity}
+          onIncrease={onIncrease}
+          onDecrease={onDecrease}
+        />
         <Grid container spacing={2}>
           <Grid item xs={6}>
             {toppings[0].isRadio ? (
-              <FormControl component="fieldset">
-                <FormLabel component="legend">
-                  {toppings[0].title.toUpperCase()}
-                </FormLabel>
+              <FormControl component="fieldset" className={classes.radioGroup}>
+                <FormLabel component="legend">{toppings[0].title}</FormLabel>
                 <RadioGroup
-                  aria-label="gender"
-                  name="gender1"
-                  value={value}
-                  onChange={handleChange}
+                  aria-label="toppings"
+                  name="toppings"
+                  value={selectedRadioOption}
+                  onChange={onRadioChange}
                 >
                   {toppings[0].items.map((topping) => (
                     <FormControlLabel
-                    key={topping.name}
+                      key={topping.name}
                       value={topping.name}
                       control={<Radio />}
                       label={topping.name}
@@ -87,12 +84,11 @@ const PizzaDetails = React.memo((props) => {
                 </RadioGroup>
               </FormControl>
             ) : (
-          
               <List
                 className={classes.root}
                 subheader={
                   <ListSubheader component="div" id="nested-list-subheader">
-                    {toppings[0].title.toUpperCase()}
+                    {toppings[0].title}
                   </ListSubheader>
                 }
               >
@@ -103,7 +99,7 @@ const PizzaDetails = React.memo((props) => {
                       key={labelId}
                       dense
                       button
-                      onClick={handleToggle(value)}
+                      onClick={onToggle(value)}
                     >
                       <ListItemIcon>
                         <Checkbox
@@ -112,6 +108,7 @@ const PizzaDetails = React.memo((props) => {
                           tabIndex={-1}
                           disableRipple
                           inputProps={{ "aria-labelledby": labelId }}
+                          color="primary"
                         />
                       </ListItemIcon>
                       <ListItemText id={labelId} primary={value.name} />
@@ -122,37 +119,24 @@ const PizzaDetails = React.memo((props) => {
             )}
           </Grid>
           <Grid item xs={6}>
-            <List
-              className={classes.root}
-              subheader={
-                <ListSubheader component="div" id="nested-list-subheader">
-                  {size[0].title.toUpperCase()}
-                </ListSubheader>
-              }
-            >
-              {size[0].items.map((value) => {
-                const labelId = `checkbox-list-label-${value.size}`;
-                return (
-                  <ListItem
-                    key={labelId}
-                    dense
-                    button
-                    onClick={handleToggle(value)}
+              <FormControl component="fieldset" className={classes.radioGroup}>
+                  <FormLabel component="legend">{size[0].title}</FormLabel>
+                  <RadioGroup
+                    aria-label="size"
+                    name="size"
+                    value={selectedSizeOption}
+                    onChange={onSizeChange}
                   >
-                    <ListItemIcon>
-                      <Checkbox
-                        edge="start"
-                        checked={checked.indexOf(value) !== -1}
-                        tabIndex={-1}
-                        disableRipple
-                        inputProps={{ "aria-labelledby": labelId }}
+                    {size[0].items.map((value) => (
+                      <FormControlLabel
+                        key={value.size}
+                        value={value.size}
+                        control={<Radio />}
+                        label={value.size}
                       />
-                    </ListItemIcon>
-                    <ListItemText id={labelId} primary={value.size} />
-                  </ListItem>
-                );
-              })}
-            </List>
+                    ))}
+                  </RadioGroup>
+                </FormControl>
           </Grid>
         </Grid>
       </Dialog>
