@@ -5,9 +5,11 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListSubheader from "@material-ui/core/ListSubheader";
 import Checkbox from "@material-ui/core/Checkbox";
+import Button from '@material-ui/core/Button';
 import ListItemText from "@material-ui/core/ListItemText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Dialog from "@material-ui/core/Dialog";
+import DialogActions from '@material-ui/core/DialogActions';
 import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
@@ -38,19 +40,14 @@ const PizzaDetails = React.memo((props) => {
     onIncrease,
     onDecrease,
     onToggle,
-    onSizeChange
+    onSizeChange,
+    onCheckout
   } = props;
 
-  const handleClose = () => {
-    onClose(selectedValue);
-  };
-
-  // console.log("Checked", checked);
-  // console.log("selectedValue", selectedValue);
   return (
     <div className={classes.dialogBox}>
       <Dialog
-        onClose={handleClose}
+        onClose={onClose}
         aria-labelledby="simple-dialog-title"
         open={open}
       >
@@ -139,6 +136,12 @@ const PizzaDetails = React.memo((props) => {
                 </FormControl>
           </Grid>
         </Grid>
+        <DialogActions>
+          <Button onClick={onCheckout} color="primary" variant="outlined">
+            Checkout
+          </Button>
+    
+        </DialogActions>
       </Dialog>
     </div>
   );

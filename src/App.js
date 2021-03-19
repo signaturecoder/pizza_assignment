@@ -1,7 +1,7 @@
 import React from 'react'
 import { Route, Switch} from 'react-router-dom';
 import './App.css';
-import Checkout from './components/Checkout';
+import Checkout from './containers/Checkout';
 import Header from './components/Header';
 import PizzaList from './containers/PizzaList';
 function App() {

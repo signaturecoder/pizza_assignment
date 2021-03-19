@@ -8,6 +8,8 @@ import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
 import PizzaDetails from "./PizzaDetails";
 import StarRateIcon from "@material-ui/icons/StarRate";
+import { useDispatch } from "react-redux";
+import { checkoutPizza } from '../redux/actions/checkoutAction';
 const useStyles = makeStyles({
   card: {
     maxWidth: 345,
@@ -51,6 +53,7 @@ const PizzaCard = ({
   imgSrc,
 }) => {
   const classes = useStyles();
+  const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
   const [selectedPizza, setSelectedPizza] = useState({});
   const [checkedToppings, setCheckedToppings] = useState([]);
@@ -72,9 +75,9 @@ const PizzaCard = ({
     setSelectedPizza(orderNewPizza);
   };
 
-  const handleClose = (value) => {
+  const handleClose = () => {
     setOpen(false);
-    setSelectedPizza(value);
+    // setSelectedPizza(value);
   };
 
   const handleDecrease = () => {
@@ -123,8 +126,13 @@ const PizzaCard = ({
     setSelectedPizza(newOrderPizza);
   };
 
+  const handleCheckout = () => {
+    console.log("Selected PIzza CArd", selectedPizza);
+    dispatch(checkoutPizza(selectedPizza));
+    handleClose();
+  }
 
-  console.log("Selected PIzza CArd", selectedPizza);
+
   return (
     <Card className={classes.card}>
       <CardMedia className={classes.media} image={imgSrc} title="pizza" />
@@ -170,6 +178,7 @@ const PizzaCard = ({
         onDecrease={handleDecrease}
         onToggle={handleToggle}
         onSizeChange={handleSizeChange}
+        onCheckout={handleCheckout}
       />
     </Card>
   );

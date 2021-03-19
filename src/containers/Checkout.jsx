@@ -8,6 +8,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Checkbox from '@material-ui/core/Checkbox';
 import IconButton from '@material-ui/core/IconButton';
 import CommentIcon from '@material-ui/icons/Comment';
+import { useSelector } from "react-redux";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -19,6 +20,7 @@ const useStyles = makeStyles((theme) => ({
   }));
 const Checkout = props => {
     const classes = useStyles();
+    const checkoutList = useSelector(state => state.checkoutList);
     const [checked, setChecked] = React.useState([0]);
 
     const handleToggle = (value) => () => {
@@ -34,7 +36,6 @@ const Checkout = props => {
       setChecked(newChecked);
     };
 
-    console.log('Checked', checked);
     return (
         <div>
             i am checkout page
