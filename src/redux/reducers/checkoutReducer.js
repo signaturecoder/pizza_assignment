@@ -5,6 +5,8 @@ export default function checkoutReducer(state = initialState.checkoutList, actio
 switch(action.type) {
     case types.CHECKOUT_PIZZA: 
         return [...state, action.pizza];
+    case types.INCREASE_QUANTITY:
+        return [...state, {quantity: action.quantity}]
     default:
     return state;
 }

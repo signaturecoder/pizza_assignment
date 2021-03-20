@@ -47,10 +47,8 @@ const PizzaList = () => {
     if(selectedValue === 'none'){
       setFilteredPizzaList(pizzaList);
     } else if( selectedValue === 'asc'){
-      console.log('PRe', previousList);
       const sortedList = previousList.sort((a, b) => (a.price > b.price) ? 1 : -1);
       setFilteredPizzaList(sortedList);
-      console.log('sorted', sortedList);
     } else if(selectedValue === 'desc') {
       const sortedList = previousList.sort((a, b) => (a.price < b.price) ? 1 : -1);
       setFilteredPizzaList(sortedList);
@@ -96,7 +94,6 @@ const PizzaList = () => {
     setFilteredPizzaList(pizzaList);
   }, [pizzaList]);
 
-  console.log("Pizzas", filteredPizzaList);
   if (filteredPizzaList.length === 0) return <p>Loading...</p>;
 
   return (

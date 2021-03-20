@@ -35,10 +35,10 @@ const PizzaDetails = React.memo((props) => {
     checked,
     selectedRadioOption,
     selectedSizeOption,
-    onRadioChange,
+    onToppingChange,
     onIncrease,
     onDecrease,
-    onToggle,
+    onToppingToggle,
     onSizeChange,
     onCheckout
   } = props;
@@ -62,13 +62,13 @@ const PizzaDetails = React.memo((props) => {
                   aria-label="toppings"
                   name="toppings"
                   value={selectedRadioOption}
-                  onChange={onRadioChange}
+                  onChange={onToppingChange}
                 >
                   {toppings[0].items.map((topping) => (
                     <FormControlLabel
                       key={topping.name}
                       value={topping.name}
-                      control={<Radio />}
+                      control={<Radio color="primary"/>}
                       label={topping.name}
                     />
                   ))}
@@ -90,7 +90,7 @@ const PizzaDetails = React.memo((props) => {
                       key={labelId}
                       dense
                       button
-                      onClick={onToggle(value)}
+                      onClick={onToppingToggle(value)}
                     >
                       <ListItemIcon>
                         <Checkbox
@@ -122,7 +122,7 @@ const PizzaDetails = React.memo((props) => {
                       <FormControlLabel
                         key={value.size}
                         value={value.size}
-                        control={<Radio />}
+                        control={<Radio color="primary"/>}
                         label={value.size}
                       />
                     ))}
@@ -136,10 +136,9 @@ const PizzaDetails = React.memo((props) => {
           onIncrease={onIncrease}
           onDecrease={onDecrease}
         />
-          <Button onClick={onCheckout} color="primary" variant="outlined" size="small">
+          <Button onClick={onCheckout} color="primary" variant="outlined" size="small" >
             Checkout
           </Button>
-    
         </DialogActions>
       </Dialog>
     </div>

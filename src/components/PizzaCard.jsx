@@ -9,7 +9,7 @@ import Button from "@material-ui/core/Button";
 import PizzaDetails from "./PizzaDetails";
 import StarRateIcon from "@material-ui/icons/StarRate";
 import { useDispatch } from "react-redux";
-import { checkoutPizza } from '../redux/actions/checkoutAction';
+import { checkoutPizza } from "../redux/actions/checkoutAction";
 const useStyles = makeStyles({
   card: {
     maxWidth: 345,
@@ -41,6 +41,15 @@ const useStyles = makeStyles({
     display: "flex",
     justifyContent: "space-between",
   },
+  veg: {
+    height: '250px',
+    width: '250px',
+    borderRadius: 50,
+    backgroundColor: 'green',
+    position: 'absolute',
+    top: 0,
+    right: 0
+  }
 });
 
 const PizzaCard = ({
@@ -57,18 +66,26 @@ const PizzaCard = ({
   const [open, setOpen] = useState(false);
   const [selectedPizza, setSelectedPizza] = useState({});
   const [checkedToppings, setCheckedToppings] = useState([]);
-  const [quantity, setQuantity] = useState(0); 
+  const [quantity, setQuantity] = useState(0);
   const [selectedRadioToppings, setSelectedRadioToppings] = useState("");
-  const [selectedSizeOption, setSelectedSizeOption] = useState("");
+  const [selectedSizeOption, setSelectedSizeOption] = useState("Regular");
 
   const handleAdd = () => {
     setOpen(true);
+    let updatedQuantity;
+    if (quantity === 0) {
+      updatedQuantity = quantity + 1;
+      setQuantity(updatedQuantity);
+    }
+
     const orderNewPizza = {
       name: name,
       description: description,
       price: price,
       rating: rating,
       size: size,
+      orderSize:selectedSizeOption, 
+      quantity: updatedQuantity,
       toppings: toppings,
       imgSrc: imgSrc,
     };
@@ -77,41 +94,41 @@ const PizzaCard = ({
 
   const handleClose = () => {
     setOpen(false);
-    // setSelectedPizza(value);
   };
 
   const handleDecrease = () => {
-    if(quantity > 0) {
+    if (quantity > 0) {
       const updatedQuantity = quantity - 1;
-      const newOrderPizza = {...selectedPizza, quantity: updatedQuantity}
+      const newOrderPizza = { ...selectedPizza, quantity: updatedQuantity };
       setQuantity(updatedQuantity);
       setSelectedPizza(newOrderPizza);
     }
-  }
+  };
 
   const handleIncrease = () => {
     const updatedQuantity = quantity + 1;
-    const newOrderPizza = {...selectedPizza,  quantity: updatedQuantity}
-
+    const newOrderPizza = { ...selectedPizza, quantity: updatedQuantity };
     setQuantity(updatedQuantity);
     setSelectedPizza(newOrderPizza);
-  }
+  };
 
-  const handleRadioChange = (event) => {
-    const updatedToppings = event.target.value;
-    const newOrderPizza = {...selectedPizza, orderToppings: updatedToppings}
-    setSelectedRadioToppings(updatedToppings);
+  const handleToppingChange = (event) => {
+    const updatedToppings = [];
+    const topping = { name: event.target.value };
+    updatedToppings.push(topping);
+    const newOrderPizza = { ...selectedPizza, orderToppings: updatedToppings };
+    setSelectedRadioToppings(event.target.value);
     setSelectedPizza(newOrderPizza);
   };
 
   const handleSizeChange = (event) => {
     const updatedPizzaSize = event.target.value;
-    const newOrderPizza = {...selectedPizza, orderSize: updatedPizzaSize}
+    const newOrderPizza = { ...selectedPizza, orderSize: updatedPizzaSize };
     setSelectedSizeOption(updatedPizzaSize);
     setSelectedPizza(newOrderPizza);
   };
 
-  const handleToggle = (value) => () => {
+  const handleToppingToggle = (value) => () => {
     const currentIndex = checkedToppings.indexOf(value);
     const newChecked = [...checkedToppings];
 
@@ -122,16 +139,14 @@ const PizzaCard = ({
     }
 
     setCheckedToppings(newChecked);
-    const newOrderPizza = {...selectedPizza, orderToppings: newChecked}
+    const newOrderPizza = { ...selectedPizza, orderToppings: newChecked };
     setSelectedPizza(newOrderPizza);
   };
 
   const handleCheckout = () => {
-    console.log("Selected PIzza CArd", selectedPizza);
     dispatch(checkoutPizza(selectedPizza));
     handleClose();
-  }
-
+  };
 
   return (
     <Card className={classes.card}>
@@ -172,10 +187,10 @@ const PizzaCard = ({
         checked={checkedToppings}
         selectedRadioOption={selectedRadioToppings}
         selectedSizeOption={selectedSizeOption}
-        onRadioChange={handleRadioChange}
+        onToppingChange={handleToppingChange}
         onIncrease={handleIncrease}
         onDecrease={handleDecrease}
-        onToggle={handleToggle}
+        onToppingToggle={handleToppingToggle}
         onSizeChange={handleSizeChange}
         onCheckout={handleCheckout}
       />
