@@ -164,7 +164,6 @@ const PizzaCard = ({
         </Typography>
       </CardContent>
       <PizzaDetails
-        selectedValue={selectedPizza}
         open={open}
         onClose={handleClose}
         size={size}

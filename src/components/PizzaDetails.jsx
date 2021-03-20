@@ -28,7 +28,6 @@ const PizzaDetails = React.memo((props) => {
 
   const {
     onClose,
-    selectedValue,
     open,
     size,
     toppings,
@@ -54,11 +53,6 @@ const PizzaDetails = React.memo((props) => {
         <DialogTitle id="simple-dialog-title">
           Choose Addons and Toppings{" "}
         </DialogTitle>
-        <PizzaQuantity
-          quantity={quantity}
-          onIncrease={onIncrease}
-          onDecrease={onDecrease}
-        />
         <Grid container spacing={2}>
           <Grid item xs={6}>
             {toppings[0].isRadio ? (
@@ -137,7 +131,12 @@ const PizzaDetails = React.memo((props) => {
           </Grid>
         </Grid>
         <DialogActions>
-          <Button onClick={onCheckout} color="primary" variant="outlined">
+        <PizzaQuantity
+          quantity={quantity}
+          onIncrease={onIncrease}
+          onDecrease={onDecrease}
+        />
+          <Button onClick={onCheckout} color="primary" variant="outlined" size="small">
             Checkout
           </Button>
     

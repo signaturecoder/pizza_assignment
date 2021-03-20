@@ -4,7 +4,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
-import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
+import CustomizedCart from './CustomizedCart';
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
@@ -27,7 +27,7 @@ export default function Header() {
           <Typography variant="h6" >
             <Link to="/" className={classes.link}>Pizza</Link>
           </Typography>
-          <Link to="/checkout" className={classes.link}><ShoppingCartIcon /></Link>
+          <Link to="/checkout" className={classes.link}><CustomizedCart/></Link>
         </Toolbar>
       </AppBar>
     </div>

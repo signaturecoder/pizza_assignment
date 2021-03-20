@@ -30,7 +30,7 @@ const PizzaQuantity = ({quantity, onIncrease, onDecrease}) => {
     const classes = useStyles();
     return (
         <div className={classes.quantityContainer}>
-             <Box component="span" className={classes.quantity}>Quantity</Box>  
+             {/* <Box component="span" className={classes.quantity}>Quantity</Box>   */}
             <div className={classes.btnContainer}>
             <Button
               size="small"

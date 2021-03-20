@@ -36,39 +36,68 @@ const PizzaList = () => {
   const pizzaList = useSelector((state) => state.pizzas);
   const [isVeg, setIsVeg] = useState(false);
   const [allChecked, setAllChecked] = useState(true);
-  const [order, setOrder] = useState("asc");
-  const [ratingOrder, setRatingOrder] = useState("low");
-  // const [filteredPizzaList, setFilteredPizzaList] = useState(pizzaList);
-  // let filteredPizzaList = [];
+  const [order, setOrder] = useState("");
+  const [ratingOrder, setRatingOrder] = useState("");
+  const [filteredPizzaList, setFilteredPizzaList] = useState([]);
 
-  // const updatedPizzaList = JSON.parse(JSON.stringify(pizzaList));
-  // if (filteredPizzaList.length === 0) {
-  //   filteredPizzaList = updatedPizzaList;
-  // }
-  const handleChange = (event) => {
-    setIsVeg(event.target.checked);
+  const handlePriceChange = (event) => { 
+    const selectedValue = event.target.value;
+    const previousList = JSON.parse(JSON.stringify(filteredPizzaList));
+    setOrder(selectedValue);
+    if(selectedValue === 'none'){
+      setFilteredPizzaList(pizzaList);
+    } else if( selectedValue === 'asc'){
+      console.log('PRe', previousList);
+      const sortedList = previousList.sort((a, b) => (a.price > b.price) ? 1 : -1);
+      setFilteredPizzaList(sortedList);
+      console.log('sorted', sortedList);
+    } else if(selectedValue === 'desc') {
+      const sortedList = previousList.sort((a, b) => (a.price < b.price) ? 1 : -1);
+      setFilteredPizzaList(sortedList);
+    }
+   
   };
+
+  const handleRatingChange = (event) => {
+    const selectedValue = event.target.value;
+    const previousList = JSON.parse(JSON.stringify(filteredPizzaList));
+    setRatingOrder(selectedValue);
+    if(selectedValue === 'none') {
+      setFilteredPizzaList(pizzaList);
+    } else if(selectedValue === 'low') {
+      const sortedList = previousList.sort((a, b) => (a.rating > b.rating) ? 1 : -1);
+      setFilteredPizzaList(sortedList);
+    } else if(selectedValue === 'high') {
+      const sortedList = previousList.sort((a, b) => (a.rating < b.rating) ? 1 : -1);
+      setFilteredPizzaList(sortedList);
+    }
+  }
+
+  const handleToggleChange = (event) => {
+    const toggleChecked = event.target.checked;
+    setIsVeg(toggleChecked);
+    setAllChecked(false);
+    setFilteredPizzaList(() =>
+    pizzaList.filter((pizza) => pizza.isVeg === toggleChecked)
+    );
+  }
 
   const handleCheckboxChange = (event) => {
     setAllChecked(event.target.checked);
+    setFilteredPizzaList(pizzaList);
   };
 
   useEffect(() => {
     dispatch(loadPizzas());
+    setFilteredPizzaList(pizzaList);
   }, []);
 
-  // useEffect(() => {
-  //   const filteredList = pizzaList.filter((pizza) => {
-  //     if (pizza.isVeg === isVeg) return pizza;
-  //   });
-  //   filteredPizzaList = filteredList;
-  //   console.log("ISVEG", isVeg);
-  //   console.log("filterd", filteredList);
-  //   // setFilteredPizzaList(filteredList);
-  // }, [isVeg]);
-  // console.log("outside ISVEG", isVeg);
-  // console.log("Pizzas", pizzaList);
-  if (pizzaList.length === 0) return <p>Loading...</p>;
+  useEffect(() => {
+    setFilteredPizzaList(pizzaList);
+  }, [pizzaList]);
+
+  console.log("Pizzas", filteredPizzaList);
+  if (filteredPizzaList.length === 0) return <p>Loading...</p>;
 
   return (
     <div>
@@ -85,10 +114,11 @@ const PizzaList = () => {
           label="All"
         />
         <FormControlLabel
+          disabled={allChecked}
           control={
             <Switch
               checked={isVeg}
-              onChange={handleChange}
+              onChange={handleToggleChange}
               name="checkedB"
               color="primary"
             />
@@ -105,11 +135,11 @@ const PizzaList = () => {
             labelId="demo-simple-select-outlined-label"
             id="demo-simple-select-outlined"
             value={order}
-            onChange={handleChange}
+            onChange={handlePriceChange}
             label="Sort By"
           >
-            <MenuItem value="">
-              <em>None</em>
+            <MenuItem value={"none"}>
+              None
             </MenuItem>
             <MenuItem value={"asc"}>Price: Low to High</MenuItem>
             <MenuItem value={"desc"}>Price: High to Low</MenuItem>
@@ -123,11 +153,11 @@ const PizzaList = () => {
             labelId="demo-simple-select-outlined-label"
             id="demo-simple-select-outlined"
             value={ratingOrder}
-            onChange={handleChange}
+            onChange={handleRatingChange}
             label="Sort By"
           >
-            <MenuItem value="">
-              <em>None</em>
+            <MenuItem value={"none"}>
+              None
             </MenuItem>
             <MenuItem value={"low"}>Rating: Low to High</MenuItem>
             <MenuItem value={"high"}>Rating: High to Low</MenuItem>
@@ -135,8 +165,8 @@ const PizzaList = () => {
         </FormControl>
       </div>
       <div className={classes.cardList}>
-        {pizzaList &&
-          pizzaList.map((pizza) => {
+        {filteredPizzaList &&
+          filteredPizzaList.map((pizza) => {
             return (
               <PizzaCard
                 key={pizza.id}
